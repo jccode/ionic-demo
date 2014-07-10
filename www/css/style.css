@@ -1,0 +1,26 @@
+/* utilities */
+.full-width {
+  width: 100%; }
+
+.sidemenu-avatar {
+  display: block;
+  text-decoration: none;
+  color: #222; }
+  .sidemenu-avatar img {
+    max-height: 33px;
+    max-width: 33px;
+    float: left;
+    margin: 0px 6px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px; }
+  .sidemenu-avatar h2 {
+    font-size: 14px;
+    margin: 0; }
+  .sidemenu-avatar p {
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0px;
+    margin: 0px; }
