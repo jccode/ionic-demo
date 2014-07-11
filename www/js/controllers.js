@@ -60,5 +60,10 @@ angular.module('starter.controllers', [])
         $scope.friend = Friends.get($stateParams.friendId);
     }])
 
+    .controller('DemosCtrl', ['$scope', function($scope) {
+        $scope.demos = ['Toast Plugin'];
+    }])
+
+
 
 ;

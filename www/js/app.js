@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters'])
 
-    .run(function($ionicPlatform) {
+    .run(function($rootScope, $ionicPlatform) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -18,6 +18,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 StatusBar.styleDefault();
             }
         });
+
+
+        // press back button to exit
+        /*
+        $ionicPlatform.registerBackButtonAction(function(e){
+            if ($rootScope.backButtonPressedOnceToExit) {
+                ionic.Platform.exitApp();
+            }
+            else if ($rootScope.$viewHistory.backView) {
+                $rootScope.$viewHistory.backView.go();
+            }
+            else {
+                $rootScope.backButtonPressedOnceToExit = true;
+                window.plugins.toast.showShortCenter(
+                    "Press back button again to exit",function(a){},function(b){}
+                );
+                setTimeout(function(){
+                    $rootScope.backButtonPressedOnceToExit = false;
+                },2000);
+            }
+            e.preventDefault();
+            return false;
+        }, 101);
+        */
     })
 
     .config(function($stateProvider, $urlRouterProvider) {
@@ -77,11 +101,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 }
             })
 
-            .state('app.demo', {
-                url: "/demo",
+            .state('app.demos', {
+                url: "/demos",
                 views: {
                     'menuContent': {
-                        templateUrl: "templates/demo.html"
+                        templateUrl: "templates/demos.html",
+                        controller: "DemosCtrl"
+                    }
+                }
+            })
+
+            .state('app.demo-detail', {
+                url: "/demo/:name",
+                views: {
+                    'menuContent': {
+                        templateUrl: function($stateParams) {
+                            var name = $stateParams.name;
+                            // name = name.replace(/\s+/g, '-').toLowerCase();
+                            return 'templates/demo/' + name + ".html"
+                        }
                     }
                 }
             })
