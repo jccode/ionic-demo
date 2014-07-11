@@ -51,3 +51,14 @@ angular.module('starter.controllers', [])
 
     .controller('PlaylistCtrl', function($scope, $stateParams) {
     })
+
+    .controller('FriendsCtrl', ['$scope', 'Friends', function($scope, Friends) {
+        $scope.friends = Friends.all()
+    }])
+
+    .controller('FriendDetailCtrl', ['$scope', '$stateParams','Friends', function($scope, $stateParams, Friends) {
+        $scope.friend = Friends.get($stateParams.friendId);
+    }])
+
+
+;

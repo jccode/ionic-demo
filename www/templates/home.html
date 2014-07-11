@@ -1,8 +1,21 @@
 <ion-view title="Home">
-  <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
-    <h1>Home</h1>
-  </ion-content>
+
+    <ion-tabs class="tabs-icon-top">
+
+        <ion-tab title="Home" icon="icon ion-home" href="#/app/home/index">
+            <ion-nav-view name="home-tab-index"></ion-nav-view>
+        </ion-tab>
+
+
+        <ion-tab title="Friends" icon="icon ion-heart" href="#/app/home/friends">
+            <ion-nav-view name="home-tab-friends"></ion-nav-view>
+        </ion-tab>
+        
+        <ion-tab title="Account" icon="icon ion-gear-b" href="#/app/home/account">
+            <ion-nav-view name="home-tab-account"></ion-nav-view>
+        </ion-tab>
+
+    </ion-tabs>
+        
+    
 </ion-view>
