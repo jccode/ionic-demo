@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters', 'starter.home'])
 
     .run(function($rootScope, $ionicPlatform) {
         $ionicPlatform.ready(function() {
@@ -56,50 +56,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
             .state('app.home', {
                 url: "/home",
+                abstract: true, 
                 views: {
                     'menuContent' :{
-                        templateUrl: "templates/home.html"
+                        templateUrl: "templates/home/home.html"
                     }
                 }
-            })
-
-            .state('app.home.index', {
-                url: "/index",
-                views: {
-                    'home-tab-index': {
-                        templateUrl: "templates/home-tab-index.html"
-                    }
-                }
-            })
-
-            .state('app.home.friends', {
-                url: "/friends",
-                views: {
-                    'home-tab-friends': {
-                        templateUrl: "templates/home-tab-friends.html", 
-                        controller: 'FriendsCtrl'
-                    }
-                }
-            })
-
-            .state('app.home.friend-detail', {
-                url: "/friend/:friendId",
-                views: {
-                    'home-tab-friends': {
-                        templateUrl: "templates/friend-detail.html",
-                        controller: 'FriendDetailCtrl'
-                    }
-                }
-            })
-
-            .state('app.home.account', {
-                url: "/account",
-                views: {
-                    'home-tab-account': {
-                        templateUrl: "templates/home-tab-account.html"
-                    }
-                }
-            })
+            })        
 
             .state('app.demos', {
                 url: "/demos",
