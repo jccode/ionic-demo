@@ -104,6 +104,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     }
                 }
             })
+
+            .state('app.music.content', {
+                url: "/content",
+                views: {
+                    "music-content": {
+                        // templateUrl: "templates/music-content.html"
+                        template: "<h3>music-content</h3>"
+                    }
+                }
+            })
         
             .state('app.playlists', {
                 url: "/playlists",
