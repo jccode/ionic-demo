@@ -61,9 +61,27 @@ angular.module('starter.controllers', [])
     }])
 
     .controller('DemosCtrl', ['$scope', function($scope) {
-        $scope.demos = ['Toast Plugin'];
+        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG'];
     }])
 
+    .controller('BarcodeDemoCtrl', ['$scope', '$timeout', function($scope, $timeout) {
+        $scope.isError = false;
+        $scope.scanBarcode = function () {
 
+            cordova.plugins.barcodeScanner.scan(function(result) {
+                $scope.$apply(function() {
+                    $scope.result = result;
+                    $scope.error = false;
+                });
+                
+            }, function(error) {
+                $scope.$apply(function() {
+                    $scope.error = error;
+                    $scope.result = false;
+                });
+            });
+
+        };
+    }])
 
 ;
