@@ -101,6 +101,7 @@ angular.module('starter.controllers', [])
 
         var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 10])
+                .on('zoomstart', zoomstarted)
                 .on('zoom', zoomed);
 
         var svg = d3.select("#svg-wrapper").append("svg")
@@ -128,6 +129,10 @@ angular.module('starter.controllers', [])
             innersvgLoaded();
         });
 
+        function zoomstarted() {
+            d3.event.sourceEvent.stopPropagation();
+        }
+
 
         function zoomed() {
             container.attr("transform", "translate("+ d3.event.translate +") scale("+ d3.event.scale +")");
@@ -136,7 +141,7 @@ angular.module('starter.controllers', [])
         // init when inner svg loaded
         function innersvgLoaded() {
             // svg click event
-            innersvg.selectAll('rect').on('click', function() {
+            innersvg.selectAll('rect').on('mousedown', function() {
                 var alertPopup = $ionicPopup.alert({
                     title: "Infomation",
                     template: "Here can show some more detail informations"
