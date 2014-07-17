@@ -1,7 +1,14 @@
 <ion-view title="SVG Demo">
-    <ion-content class="has-header padding">
+    <ion-content class="has-header padding" ng-controller="SVGDemoCtrl">
+
+        <style type="text/css" media="screen">
+          #svg-wrapper {
+              margin: 10px 0;
+          }
+        </style>
         
-        <object type="image/svg+xml" data="img/demo-plan.svg">Your browser does not support SVG</object>
+        <div id="svg-wrapper"></div>
+        <button class="button button-positive" ng-click='toggleRectColor()'> toggle rect color </button>
 
     </ion-content>
 </ion-view>

@@ -91,4 +91,89 @@ angular.module('starter.controllers', [])
         };
     }])
 
+    .controller('SVGDemoCtrl', ['$scope', '$window', '$ionicPopup', function($scope, $window, $ionicPopup) {
+
+        // console.log($window.innerWidth + ", " + $window.innerHeight);
+        
+        var margin = {top: -5, right: -5, bottom: -5, left: -5},
+            width = $window.innerWidth - margin.left - margin.right,
+            height = $window.innerHeight / 2 - margin.top - margin.bottom;
+
+        var zoom = d3.behavior.zoom()
+                .scaleExtent([1, 10])
+                .on('zoom', zoomed);
+
+        var svg = d3.select("#svg-wrapper").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.right + ")" )
+                .call(zoom);
+
+        var rect = svg.append("rect")
+                .attr('width', width)
+                .attr('height', height)
+                .style('fill', 'none')
+                .style('pointer-events', 'all');
+
+        var container = svg.append('g');
+
+        var innersvg; 
+        d3.xml('templates/demo/demo-plan.svg', 'image/svg+xml', function(xml) {
+            innersvg = container.append('g')
+                .append(function() {
+                    return xml.documentElement;
+                });
+
+            innersvgLoaded();
+        });
+
+
+        function zoomed() {
+            container.attr("transform", "translate("+ d3.event.translate +") scale("+ d3.event.scale +")");
+        }
+
+        // init when inner svg loaded
+        function innersvgLoaded() {
+            // svg click event
+            innersvg.selectAll('rect').on('click', function() {
+                var alertPopup = $ionicPopup.alert({
+                    title: "Infomation",
+                    template: "Here can show some more detail informations"
+                });
+                alertPopup.then(function(res) {
+                    // Here can put some code to do some stuff after the popup closed.
+                });
+            });
+        }
+
+        // register a resize handler
+        $window.onresize = function() {
+            $scope.$apply(function() {
+                width = $window.innerWidth - margin.left - margin.right;
+                height = $window.innerHeight / 2 - margin.top - margin.bottom;
+                d3.select("#svg-wrapper").select("svg")
+                    .attr({
+                        'width': width + margin.left + margin.right,
+                        'height': height + margin.top + margin.bottom
+                    })
+                    .select('rect')
+                    .attr({
+                        'width': width,
+                        'height': height
+                    });
+                // console.log('resized');
+            });
+        }
+        
+
+        // toggle color
+        var counter = 0, 
+            colors = ['blue', 'red', 'white'];
+        $scope.toggleRectColor = function () {
+            innersvg.selectAll('rect').style('fill', colors[ ++counter % 3 ]);
+        };
+        
+    }])
+
 ;
