@@ -91,8 +91,10 @@ angular.module('starter.controllers', [])
         };
     }])
 
-    .controller('SVGDemoCtrl', ['$scope', '$window', '$ionicPopup', function($scope, $window, $ionicPopup) {
+    .controller('SVGDemoCtrl', ['$scope', '$window', '$filter', '$timeout', '$ionicPopup',
+                                function($scope, $window, $filter, $timeout, $ionicPopup) {
 
+        $scope.msgs = [];
         // console.log($window.innerWidth + ", " + $window.innerHeight);
         
         var margin = {top: -5, right: -5, bottom: -5, left: -5},
@@ -120,7 +122,7 @@ angular.module('starter.controllers', [])
         var container = svg.append('g');
 
         var innersvg; 
-        d3.xml('templates/demo/demo-plan.svg', 'image/svg+xml', function(xml) {
+        d3.xml('templates/demo/demo-plan2.svg', 'image/svg+xml', function(xml) {
             innersvg = container.append('g')
                 .append(function() {
                     return xml.documentElement;
@@ -130,7 +132,7 @@ angular.module('starter.controllers', [])
         });
 
         function zoomstarted() {
-            d3.event.sourceEvent.stopPropagation();
+            // d3.event.sourceEvent.stopPropagation();
         }
 
 
@@ -140,16 +142,40 @@ angular.module('starter.controllers', [])
 
         // init when inner svg loaded
         function innersvgLoaded() {
-            // svg click event
-            innersvg.selectAll('rect').on('mousedown', function() {
-                var alertPopup = $ionicPopup.alert({
-                    title: "Infomation",
-                    template: "Here can show some more detail informations"
+
+            // init seat state, add click event
+            innersvg.selectAll(".seat")
+                .classed('green', true)
+                .on('click', function() {
+                    // var alertPopup = $ionicPopup.alert({
+                    //     title: "Infomation",
+                    //     template: "Here can show some more detail informations"
+                    // });
+                    // alertPopup.then(function(res) {
+                    //     // Here can put some code to do some stuff after the popup closed.
+                    // });
+
+                    // $scope.$apply(function() {
+                    //     var p = '[' + $filter('date')(new Date, 'HH:mm:ss.sss') + '] ';
+                    //     $scope.msgs.push(p + 'rect is clicked.');
+                    //     $timeout(function() {
+                    //         $scope.msgs.splice(0, 1);
+                    //     }, 3000);
+                    // });
+
+                    var el = d3.select(this);
+                    if( el.classed('green') ){
+                        el.classed({
+                            'red': true,
+                            'green': false
+                        });
+                    } else {
+                        el.classed({
+                            'green': true,
+                            'red': false
+                        });
+                    }
                 });
-                alertPopup.then(function(res) {
-                    // Here can put some code to do some stuff after the popup closed.
-                });
-            });
         }
 
         // register a resize handler
@@ -173,10 +199,10 @@ angular.module('starter.controllers', [])
         
 
         // toggle color
-        var counter = 0, 
-            colors = ['blue', 'red', 'white'];
         $scope.toggleRectColor = function () {
-            innersvg.selectAll('rect').style('fill', colors[ ++counter % 3 ]);
+            innersvg.selectAll('.seat')
+                .classed('red', false)
+                .classed('green', true);
         };
         
     }])
