@@ -3,7 +3,9 @@
         <p>Click scan button to scan some barcode.</p>
         <button class="button button-light" ng-click="scanBarcode();">scan</button>
         <div ng-if="result">
-            <p>Result: {{result.text}}</p>
+            <p>Result:
+            <textarea ng-model="result.text" rows=3 readonly></textarea>
+            </p>
             <p>Format: {{result.format}}</p>
             <p>Cancelled: {{result.cancelled}}</p>
         </div>

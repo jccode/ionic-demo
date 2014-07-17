@@ -67,7 +67,7 @@ angular.module('starter.controllers', [])
     .controller('BarcodeDemoCtrl', ['$scope', '$timeout', function($scope, $timeout) {
         $scope.isError = false;
         $scope.scanBarcode = function () {
-
+            
             cordova.plugins.barcodeScanner.scan(function(result) {
                 $scope.$apply(function() {
                     $scope.result = result;
@@ -81,6 +81,13 @@ angular.module('starter.controllers', [])
                 });
             });
 
+            /*
+            $scope.result = {
+                text: "hello world.",
+                format: "QR-code",
+                cancelled: true
+            }; 
+             */
         };
     }])
 
