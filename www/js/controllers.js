@@ -91,10 +91,10 @@ angular.module('starter.controllers', [])
         };
     }])
 
-    .controller('SVGDemoCtrl', ['$scope', '$window', '$filter', '$timeout', '$ionicPopup',
-                                function($scope, $window, $filter, $timeout, $ionicPopup) {
-
+    .controller('SVGDemoCtrl', ['$scope', '$window', '$filter', '$timeout', '$ionicSideMenuDelegate', '$ionicPopup', function($scope, $window, $filter, $timeout, $ionicSideMenuDelegate, $ionicPopup) {
+        
         $scope.msgs = [];
+        
         // console.log($window.innerWidth + ", " + $window.innerHeight);
         
         var margin = {top: -5, right: -5, bottom: -5, left: -5},
@@ -104,7 +104,8 @@ angular.module('starter.controllers', [])
         var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 10])
                 .on('zoomstart', zoomstarted)
-                .on('zoom', zoomed);
+                .on('zoom', zoomed)
+                .on('zoomend', zoomended);
 
         var svg = d3.select("#svg-wrapper").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -131,10 +132,16 @@ angular.module('starter.controllers', [])
             innersvgLoaded();
         });
 
+
         function zoomstarted() {
             // d3.event.sourceEvent.stopPropagation();
+            // console.log(d3.event.sourceEvent);
+            $ionicSideMenuDelegate.canDragContent(false);
         }
 
+        function zoomended() {
+            $ionicSideMenuDelegate.canDragContent(true);
+        }
 
         function zoomed() {
             container.attr("transform", "translate("+ d3.event.translate +") scale("+ d3.event.scale +")");
@@ -146,14 +153,7 @@ angular.module('starter.controllers', [])
             // init seat state, add click event
             innersvg.selectAll(".seat")
                 .classed('green', true)
-                .on('click', function() {
-                    // var alertPopup = $ionicPopup.alert({
-                    //     title: "Infomation",
-                    //     template: "Here can show some more detail informations"
-                    // });
-                    // alertPopup.then(function(res) {
-                    //     // Here can put some code to do some stuff after the popup closed.
-                    // });
+                .on('touch', function() {
 
                     // $scope.$apply(function() {
                     //     var p = '[' + $filter('date')(new Date, 'HH:mm:ss.sss') + '] ';
@@ -164,19 +164,30 @@ angular.module('starter.controllers', [])
                     // });
 
                     var el = d3.select(this);
+                    var seat = el.attr('data-seat');
+                    var msg; 
                     if( el.classed('green') ){
                         el.classed({
                             'red': true,
                             'green': false
                         });
+                        
+                        msg = 'Seat ' + seat + ' was reserved for you!';
                     } else {
-                        el.classed({
-                            'green': true,
-                            'red': false
-                        });
+                        msg = "Here we'll show the user profile who taken the seat " + seat;
                     }
+
+                    var alertPopup = $ionicPopup.alert({
+                        title: "Infomation",
+                        template: msg
+                    });
+                    alertPopup.then(function(res) {
+                        // Here can put some code to do some stuff after the popup closed.
+                    });
+                    
                 });
         }
+
 
         // register a resize handler
         $window.onresize = function() {
