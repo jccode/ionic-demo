@@ -1,0 +1,8 @@
+<ion-view title="Local Notification Demo">
+    <ion-content class="has-header padding" ng-controller="LocalNotificationDemoCtrl">
+        <button class="button button-stable button-full" ng-click="notifyNow();">push a notification rightnow</button>
+        <button class="button button-positive button-full" ng-click="notify(2);">push a notification after 2s</button>
+        <button class="button button-calm button-full" ng-click="cancel();">cancel the first notification</button>
+        <button class="button button-assertive button-full" ng-click="cancelAll();">cancel all the notification</button>
+    </ion-content>
+</ion-view>

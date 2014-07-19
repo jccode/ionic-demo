@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
     }])
 
     .controller('DemosCtrl', ['$scope', function($scope) {
-        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG'];
+        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG', 'Local Notification Plugin'];
     }])
 
     .controller('BarcodeDemoCtrl', ['$scope', '$timeout', function($scope, $timeout) {
@@ -215,6 +215,38 @@ angular.module('starter.controllers', [])
                 .classed('red', false)
                 .classed('green', true);
         };
+        
+    }])
+
+    .controller('LocalNotificationDemoCtrl', ['$scope', function($scope) {
+        var ID1 = "1";
+        
+        $scope.notifyNow = function () {
+            window.plugin.notification.local.add({
+                id: ID1,
+                title: 'Reminder',
+                message: 'This is the first notification. '
+            });
+        };
+
+        $scope.notify = function (second) {
+            var now = +new Date();
+            window.plugin.notification.local.add({
+                id: now,
+                title: 'A delay notification',
+                date: new Date(now + second*1000),
+                message: 'Ah ha, the second notification. ' + now
+            });
+        };
+
+        $scope.cancel = function () {
+            window.plugin.notification.local.cancel(ID1);
+        };
+
+        $scope.cancelAll = function () {
+            window.plugin.notification.local.cancelAll();
+        };
+
         
     }])
 
