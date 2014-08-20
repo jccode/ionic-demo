@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
     }])
 
     .controller('DemosCtrl', ['$scope', function($scope) {
-        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG', 'Local Notification Plugin'];
+        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG', 'Local Notification Plugin', 'Bluetooth'];
     }])
 
     .controller('BarcodeDemoCtrl', ['$scope', '$timeout', function($scope, $timeout) {
@@ -90,6 +90,7 @@ angular.module('starter.controllers', [])
              */
         };
     }])
+
 
     .controller('SVGDemoCtrl', ['$scope', '$window', '$filter', '$timeout', '$ionicSideMenuDelegate', '$ionicPopup', function($scope, $window, $filter, $timeout, $ionicSideMenuDelegate, $ionicPopup) {
         
@@ -250,4 +251,91 @@ angular.module('starter.controllers', [])
         
     }])
 
+    .controller('BluetoothDemoCtrl', ['$scope', '$window', function($scope, $window) {
+        function showMsg(msg) {
+            $window.plugins.toast.showShortBottom(msg);
+        }
+
+        $scope.checkIfBluetoothEnable = function() {
+            bluetoothSerial.isEnabled(function() {
+                showMsg("Bluetooth is enabled.");
+            }, function() {
+                showMsg("Bluetooth is not enabled.");                
+            });
+        }
+        $scope.listPairedDevices = function() {
+            bluetoothSerial.list(function(data) {
+                showMsg(data);
+            }, function(e) {
+                showMsg('Request failed. ' + e);
+            });
+        }
+
+        function leErrorCallback(e) {
+            showMsg('Bluetooth request failded. type: ' + e["error"] + " error msg: " + e["message"]);
+        }
+
+        
+        $scope.leIsEnabled = function() {
+            bluetoothle.isEnabled(function(ret) {
+                showMsg('Bluetooth is' + ret?' ':' not ' + "enabled");
+            });
+        }
+        $scope.leIsInitialize = function() {
+            bluetoothle.isInitialized(function(data) {
+                var ret = data['isInitialized'];
+                showMsg('Bluetooth is' + ret?' ':' not ' + "initialize");
+            });
+        }
+        $scope.leInitialize = function() {
+            bluetoothle.initialize(function(data) {
+                var ret = data['status'] == 'enabled';
+                if(ret) {
+                    showMsg('Bluetooth initialize successful')
+                } else {
+                    showMsg('Bluetooth initialize failed. status: ' + data['status'])
+                }
+            }, leErrorCallback, {'request': true});
+        }
+        $scope.leStartScan = function() {
+            bluetoothle.startScan(function(data) {
+                var status = data['status'];
+                if(status == 'scanStarted') {
+                    showMsg('Bluetooth scan started ...');
+                }
+                else if(status == 'scanResult') {
+                    showMsg('Find device ' + data['name'] + ', address: ' + data['address']);
+                }
+                else {
+                    showMsg("Bluetooth successful callback");
+                }
+            }, leErrorCallback, null);
+        }
+        $scope.leStopScan = function() {
+            bluetoothle.stopScan(function(data) {
+                var status = data['status'];
+                if(status == 'scanStopped') {
+                    showMsg('Bluetooth scan stopped');
+                }
+                else {
+                    showMsg('Bluetooth stopScan callback');
+                }
+            }, leErrorCallback);
+        }
+        $scope.leClose = function() {
+            bluetoothle.close(function(data) {
+                var status = data['status'];
+                if(status == 'closed') {
+                    showMsg('Bluetooth closed.');
+                } else {
+                    showMsg('bluetooth close callback');
+                }
+            }, leErrorCallback);
+        }
+
+    }])
+
+
 ;
+
+

@@ -6,6 +6,6 @@
 cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
 cordova plugin add https://github.com/wildabeast/BarcodeScanner
 cordova plugin add de.appplant.cordova.plugin.local-notification
-#cordova plugin add https://github.com/randdusing/BluetoothLE
-#cordova plugin add https://github.com/don/BluetoothSerial.git
+cordova plugin add https://github.com/randdusing/BluetoothLE
+cordova plugin add https://github.com/don/BluetoothSerial.git
 
