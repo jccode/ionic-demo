@@ -20,4 +20,26 @@ angular.module('starter.services', [])
             }
         };
         
-    });
+    })
+
+    .factory('Users', ['$resource', function($resource) {
+        var url = 'https://www.nweapp.nl/hnwapi/api/user',
+            resource = $resource(url);
+
+        return {
+            all: function() {
+                return resource.query();
+            },
+
+            allPics: function() {
+                return resource.query(function(rets) {
+                    return _.map(function(el) {
+                        return el.UserPic;
+                    }, rets);
+                });
+            }
+
+
+        };
+    }])
+;

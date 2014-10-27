@@ -61,7 +61,8 @@ angular.module('starter.controllers', [])
     }])
 
     .controller('DemosCtrl', ['$scope', function($scope) {
-        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG', 'Local Notification Plugin', 'Bluetooth'];
+        $scope.demos = ['Toast Plugin', 'Barcode Scanner Plugin', 'SVG', 'Local Notification Plugin', 'Bluetooth',
+                       'File API'];
     }])
 
     .controller('BarcodeDemoCtrl', ['$scope', '$timeout', function($scope, $timeout) {
@@ -335,6 +336,20 @@ angular.module('starter.controllers', [])
 
     }])
 
+    .controller('FileAPIDemoCtrl', ['$scope', '$window', 'Users', 'FileUtil', function($scope, $window, Users, FileUtil) {
+
+        Users.allPics().$promise.then(function(pics) {
+            console.log(pics);
+        });
+
+        
+        $scope.fuck = function () {
+            console.log('fuck.......');
+            $window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, FileUtil.onFSSuccess, null);
+            console.log('endd.......');
+        };
+
+    }])
 
 ;
 
