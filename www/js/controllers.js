@@ -338,8 +338,10 @@ angular.module('starter.controllers', [])
 
     .controller('FileAPIDemoCtrl', ['$scope', '$window', 'Users', 'FileUtil', function($scope, $window, Users, FileUtil) {
 
+        console.log( ';;;;;;;;;;;;;;;;;;;;;;;;;;' );
+
         Users.allPics().$promise.then(function(pics) {
-            console.log(pics);
+            console.log(JSON.stringify(pics));
         });
 
         

@@ -1,5 +1,5 @@
 
-angular.module('starter.services', [])
+angular.module('starter.services', ['ngResource'])
 
     .factory('Friends', function() {
 
@@ -22,7 +22,7 @@ angular.module('starter.services', [])
         
     })
 
-    .factory('Users', ['$resource', function($resource) {
+    .factory('Users', ['$resource', '_', function($resource, _) {
         var url = 'https://www.nweapp.nl/hnwapi/api/user',
             resource = $resource(url);
 
@@ -33,9 +33,9 @@ angular.module('starter.services', [])
 
             allPics: function() {
                 return resource.query(function(rets) {
-                    return _.map(function(el) {
+                    return _.map(rets, function(el) {
                         return el.UserPic;
-                    }, rets);
+                    });
                 });
             }
 
