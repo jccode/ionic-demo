@@ -3,12 +3,15 @@
         <h4>FileAPI</h4>
         <div>
             <img src="http://imgtuku.mingxing.com/upload/attach/2012/11/27330-1XyORkf.jpg" alt="" style="width:200px;" />
+            1
+            <img src="file:///storage/emulated/0/Android/data/tk.jcchen.ionic-demo/272955.jpg" alt="" style="width:200px;" />2 <!--file:///storage/emulated/0/Android/data/tk.jcchen.ionic-demo/272955.jpg-->
             <button class="btn btn-primary" ng-click="fuck()">Load pics</button>
         </div>
 
         <ul>
             <li ng-repeat="pic in pics">
-                <img src="" alt="" />
+                {{pic}}
+                <img ng-src="{{pic}}" />
             </li>
         </ul>
         

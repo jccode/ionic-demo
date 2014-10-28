@@ -29,17 +29,7 @@ angular.module('starter.services', ['ngResource'])
         return {
             all: function() {
                 return resource.query();
-            },
-
-            allPics: function() {
-                return resource.query(function(rets) {
-                    return _.map(rets, function(el) {
-                        return el.UserPic;
-                    });
-                });
             }
-
-
         };
     }])
 ;

@@ -336,18 +336,75 @@ angular.module('starter.controllers', [])
 
     }])
 
-    .controller('FileAPIDemoCtrl', ['$scope', '$window', 'Users', 'FileUtil', function($scope, $window, Users, FileUtil) {
+    .controller('FileAPIDemoCtrl', ['$scope', '$window', 'Users', 'FileUtil', '_', function($scope, $window, Users, FileUtil, _) {
 
-        console.log( ';;;;;;;;;;;;;;;;;;;;;;;;;;' );
+        var baseurl = 'https://www.nweapp.nl/hnw';
+        var DATADIR, knownfiles = [];
+        
+        
 
-        Users.allPics().$promise.then(function(pics) {
-            console.log(JSON.stringify(pics));
-        });
+        function getName(path) {
+            return path.replace(/.*\/(\w+\.(jpg|png))/ig, '$1');
+        }
+
+        function onError(e) {
+            console.log( "ERROR" );
+            console.log( JSON.stringify(e) );
+        }
+
+        function onFSSuccess(fileSystem) {
+            fileSystem.root.getDirectory("Android/data/tk.jcchen.ionic-demo", {create: true}, gotDir, onError);
+        }
+
+        function gotDir(d) {
+            DATADIR = d;
+            var reader = DATADIR.createReader();
+            reader.readEntries(function(d) {
+                gotFiles(d);
+                downloadFiles();
+            }, onError);
+        }
+
+        function gotFiles(entries) {
+            console.log("The dir has " + entries.length + " entries.");
+            _.each(entries, function(e) {
+                knownfiles.push(e.name);
+                // $scope.pics.push(e.fullPath);
+                $scope.pics.push(e.toURL());
+            });
+            $scope.$apply();
+        }
+
+        function downloadFiles() {
+            Users.all().$promise.then(function(users) {
+                var pics = _.map(users, function(user) {
+                    return user.UserPic;
+                });
+
+                _.each(pics, function(picurl) {
+                    var name = getName(picurl);
+                    if(!_.contains(knownfiles, name)) {
+                        console.log('need to download ' + name);
+                        var ft = new FileTransfer();
+                        var dlPath = DATADIR.toURL() + "/" + name;
+                        ft.download(baseurl + escape(picurl), dlPath, function(e) {
+                            // $scope.pics.push(dlPath);
+                            $scope.pics.push(e.toURL());
+                            console.log("download " + name + " successful. " + dlPath);
+                            $scope.$apply();
+                        }, onError);
+                    }
+                });
+            });
+        }
+
+
 
         
         $scope.fuck = function () {
             console.log('fuck.......');
-            $window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, FileUtil.onFSSuccess, null);
+            $scope.pics = [];
+            $window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, null);
             console.log('endd.......');
         };
 
